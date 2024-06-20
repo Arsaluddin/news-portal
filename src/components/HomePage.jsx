@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { fetchArticles } from '../api';
 import ArticleList from './ArticleList';
+import CategoryFilter from './CategoryFilter';
 import Pagination from './Pagination';
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [category, setCategory] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -14,7 +16,7 @@ const HomePage = () => {
     const loadArticles = async () => {
       setLoading(true);
       try {
-        const data = await fetchArticles('tesla', '2024-05-20', 'publishedAt', page);
+        const data = await fetchArticles(category || 'india', 'publishedAt', page);
         setArticles(data);
         setTotalPages(Math.ceil(data.totalResults / 10)); // Assuming 10 articles per page
         setLoading(false);
@@ -24,10 +26,15 @@ const HomePage = () => {
       }
     };
     loadArticles();
-  }, [page]);
+  }, [category, page]);
+
   return (
-    <div>
-      <h1>Latest Tesla News</h1>
+    <div className="container mx-auto">
+      <CategoryFilter
+        categories={['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']}
+        selectedCategory={category}
+        onSelectCategory={setCategory}
+      />
       <ArticleList articles={articles} loading={loading} error={error} />
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
@@ -35,4 +42,6 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
 

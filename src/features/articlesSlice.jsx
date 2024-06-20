@@ -1,8 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { fetchArticles } from '../api';
+import { fetchArticles } from '../services/api';
 
-export const getArticles = createAsyncThunk('articles/getArticles', async ({ category, page }) => {
-  const response = await fetchArticles(category, page);
+export const getArticles = createAsyncThunk('articles/getArticles', async ({ query, sortBy, page }) => {
+  const response = await fetchArticles(query, sortBy, page);
   return response;
 });
 
