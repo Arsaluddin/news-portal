@@ -1,6 +1,7 @@
 import axios from 'axios';
 
-const API_KEY = process.env.REACT_APP_API_KEY;
+const API_KEY = import.meta.env.VITE_API_KEY;
+console.log('API_KEY:', API_KEY); // Debugging log
 const BASE_URL = 'https://newsapi.org/v2/everything';
 
 const getYesterdayDate = () => {
@@ -9,7 +10,7 @@ const getYesterdayDate = () => {
   return date.toISOString().split('T')[0];
 };
 
-export const fetchArticles = async (query = 'india', category = '', page = 1) => {
+export const fetchArticles = async (query = 'india', category = '', page = 1, sortBy = 'publishedAt') => {
   try {
     const response = await axios.get(BASE_URL, {
       params: {
@@ -19,7 +20,7 @@ export const fetchArticles = async (query = 'india', category = '', page = 1) =>
         page,
         pageSize: 10,
         language: 'en',
-        sortBy: 'publishedAt',
+        sortBy,
       },
     });
     return response.data;
@@ -42,6 +43,8 @@ export const fetchArticleByUrl = async (url) => {
     throw error;
   }
 };
+
+
 
 
 

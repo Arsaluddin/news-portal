@@ -7,6 +7,8 @@ import Search from './Search';
 import '../styles.css';
 
 const HomePage = () => {
+  console.log('API_KEY:', import.meta.env.VITE_API_KEY); // Add this line
+
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -20,7 +22,7 @@ const HomePage = () => {
     const loadArticles = async () => {
       setLoading(true);
       try {
-        console.log('Fetching articles with:', { query, category, page, sortBy });
+        console.log('Fetching articles with:', { query, category, page, sortBy, API_KEY: import.meta.env.VITE_API_KEY });
         const data = await fetchArticles(query, category, page, sortBy);
         setArticles(data.articles);
         setTotalPages(Math.ceil(data.totalResults / 10)); // Assuming 10 articles per page
@@ -70,12 +72,4 @@ const HomePage = () => {
 };
 
 export default HomePage;
-
-
-
-
-
-
-
-
 
