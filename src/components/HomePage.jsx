@@ -13,12 +13,15 @@ const HomePage = () => {
   const [category, setCategory] = useState('');
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [query, setQuery] = useState('india');
+  const [sortBy, setSortBy] = useState('publishedAt');
 
   useEffect(() => {
     const loadArticles = async () => {
       setLoading(true);
       try {
-        const data = await fetchArticles(category || 'india', page);
+        console.log('Fetching articles with:', { query, category, page, sortBy });
+        const data = await fetchArticles(query, category, page, sortBy);
         setArticles(data.articles);
         setTotalPages(Math.ceil(data.totalResults / 10)); // Assuming 10 articles per page
         setLoading(false);
@@ -28,20 +31,38 @@ const HomePage = () => {
       }
     };
     loadArticles();
-  }, [category, page]);
+  }, [category, page, query, sortBy]);
 
-  const handleSearch = (query) => {
-    setCategory(query);
+  const handleSearch = (searchQuery) => {
+    setQuery(searchQuery);
+    setPage(1); // Reset to first page for new search
+  };
+
+  const handleCategoryChange = (selectedCategory) => {
+    setCategory(selectedCategory);
+    setPage(1); // Reset to first page for new category
+  };
+
+  const handleSortChange = (e) => {
+    setSortBy(e.target.value);
+    setPage(1); // Reset to first page for new sorting
   };
 
   return (
     <div className="container mx-auto p-4">
       <Search onSearch={handleSearch} />
-      <CategoryFilter
-        categories={['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']}
-        selectedCategory={category}
-        onSelectCategory={setCategory}
-      />
+      <div className="flex justify-between items-center">
+        <CategoryFilter
+          categories={['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']}
+          selectedCategory={category}
+          onSelectCategory={handleCategoryChange}
+        />
+        <select value={sortBy} onChange={handleSortChange} className="bg-gray-200 border border-gray-400 p-2 rounded-md">
+          <option value="publishedAt">Published At</option>
+          <option value="relevancy">Relevancy</option>
+          <option value="popularity">Popularity</option>
+        </select>
+      </div>
       <ArticleList articles={articles} loading={loading} error={error} />
       <Pagination currentPage={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
@@ -49,6 +70,8 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
 
 
 

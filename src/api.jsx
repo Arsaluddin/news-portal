@@ -1,19 +1,28 @@
 import axios from 'axios';
 
 const API_KEY = '769d5b00f0ee4ba4a1ea3b01a509b203';
-const CORS_PROXY = 'https://cors-anywhere.herokuapp.com/';
+const BASE_URL = 'https://newsapi.org/v2/everything';
 
-export const fetchArticles = async (query = 'india', page = 1) => {
+const getYesterdayDate = () => {
+  const date = new Date();
+  date.setDate(date.getDate() - 1);
+  return date.toISOString().split('T')[0];
+};
+
+export const fetchArticles = async (query = 'india', category = '', page = 1) => {
   try {
-    const response = await axios.get(`${CORS_PROXY}https://newsapi.org/v2/everything`, {
+    const response = await axios.get(BASE_URL, {
       params: {
-        q: query,
+        q: category ? `${query} AND ${category}` : query,
         from: getYesterdayDate(),
         apiKey: API_KEY,
         page,
         pageSize: 10,
         language: 'en',
         sortBy: 'publishedAt',
+      },
+      headers: {
+        'X-Api-Key': API_KEY,
       },
     });
     return response.data;
@@ -25,9 +34,9 @@ export const fetchArticles = async (query = 'india', page = 1) => {
 
 export const fetchArticleByUrl = async (url) => {
   try {
-    const response = await axios.get(`${CORS_PROXY}${url}`, {
-      params: {
-        apiKey: API_KEY,
+    const response = await axios.get(url, {
+      headers: {
+        'X-Api-Key': API_KEY,
       },
     });
     return response.data;
@@ -37,11 +46,6 @@ export const fetchArticleByUrl = async (url) => {
   }
 };
 
-const getYesterdayDate = () => {
-  const date = new Date();
-  date.setDate(date.getDate() - 1);
-  return date.toISOString().split('T')[0];
-};
 
 
 

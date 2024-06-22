@@ -15,8 +15,9 @@ const Search = ({ onSearch }) => {
         value={query} 
         onChange={(e) => setQuery(e.target.value)} 
         placeholder="Search for articles..." 
+        className="bg-gray-200 border border-gray-400 p-2 rounded-md"
       />
-      <button onClick={handleSearch}>
+      <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
         Search
       </button>
     </div>
@@ -24,6 +25,7 @@ const Search = ({ onSearch }) => {
 };
 
 export default Search;
+
 
 
 
