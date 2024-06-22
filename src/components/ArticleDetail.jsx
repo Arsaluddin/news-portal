@@ -27,12 +27,12 @@ const ArticleDetail = () => {
   if (error) return <p className="text-center text-red-500">Error loading article</p>;
 
   return (
-    <div className="p-6">
+    <div className="article-detail">
       {article && (
         <>
           <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
-          <img src={article.urlToImage} alt={article.title} className="w-full h-auto mb-4" />
-          <p>{article.content}</p>
+          <img src={article.urlToImage} alt={article.title} className="w-full h-auto mb-4 rounded-md" />
+          <p className="text-lg text-gray-700">{article.content}</p>
         </>
       )}
     </div>
@@ -40,6 +40,8 @@ const ArticleDetail = () => {
 };
 
 export default ArticleDetail;
+
+
 
 
 

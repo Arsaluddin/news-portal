@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import '../styles.css';
 
 const Search = ({ onSearch }) => {
   const [query, setQuery] = useState('');
@@ -8,15 +9,14 @@ const Search = ({ onSearch }) => {
   };
 
   return (
-    <div className="p-4">
+    <div className="search">
       <input 
         type="text" 
         value={query} 
         onChange={(e) => setQuery(e.target.value)} 
         placeholder="Search for articles..." 
-        className="bg-gray-200 border border-gray-400 p-2 rounded-md"
       />
-      <button onClick={handleSearch} className="bg-blue-500 text-white px-4 py-2 rounded-md ml-2">
+      <button onClick={handleSearch}>
         Search
       </button>
     </div>
@@ -24,4 +24,8 @@ const Search = ({ onSearch }) => {
 };
 
 export default Search;
+
+
+
+
 

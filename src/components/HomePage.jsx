@@ -3,6 +3,8 @@ import { fetchArticles } from '../api';
 import ArticleList from './ArticleList';
 import CategoryFilter from './CategoryFilter';
 import Pagination from './Pagination';
+import Search from './Search';
+import '../styles.css';
 
 const HomePage = () => {
   const [articles, setArticles] = useState([]);
@@ -16,8 +18,8 @@ const HomePage = () => {
     const loadArticles = async () => {
       setLoading(true);
       try {
-        const data = await fetchArticles(category || 'india', 'publishedAt', page);
-        setArticles(data);
+        const data = await fetchArticles(category || 'india', page);
+        setArticles(data.articles);
         setTotalPages(Math.ceil(data.totalResults / 10)); // Assuming 10 articles per page
         setLoading(false);
       } catch (error) {
@@ -28,8 +30,13 @@ const HomePage = () => {
     loadArticles();
   }, [category, page]);
 
+  const handleSearch = (query) => {
+    setCategory(query);
+  };
+
   return (
-    <div className="container mx-auto">
+    <div className="container mx-auto p-4">
+      <Search onSearch={handleSearch} />
       <CategoryFilter
         categories={['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology']}
         selectedCategory={category}
@@ -42,6 +49,10 @@ const HomePage = () => {
 };
 
 export default HomePage;
+
+
+
+
 
 
 
